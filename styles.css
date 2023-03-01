@@ -1,53 +1,85 @@
-*{
-    font-size:18px;
-    font-family:sans-serif;
+* {
+    font-size: 18px;
+    font-family: sans-serif;
 }
 
-#canvas{
-    width:80vw;
+#canvas {
+    width: 80vw;
 }
 
-.item{
+.item {
     display: flex;
     flex-flow: row nowrap;
-    align-items:center;
-    width:100%;
+    align-items: center;
+    width: 100%;
 }
 
-.item__completed{
-    width:50px;
-    visibility:hidden;
-    position:relative;
+.item__completed {
+    width: 50px;
+    visibility: hidden;
+    position: relative;
 }
 
-.item__description{
-    width:90%;
+.item__description {
+    width: 90%;
 }
 
-.item__completed:not(checked)::after{ 
-    visibility:visible;
+.item__completed:not(checked)::after {
+    visibility: visible;
     content: '\0021';
-    position:absolute;
-    left:50%;
+    position: absolute;
+    left: 50%;
 }
 
-.item__completed:not(checked) + .item__description{
-    font-weight:bold;
+.item__completed:not(checked)+.item__description {
+    font-weight: bold;
 }
 
-.item__completed:checked::after{
-    visibility:visible;
-    content:'\2713';
-    position:absolute;
-    left:50%;
+.item__completed:checked::after {
+    visibility: visible;
+    content: '\2713';
+    position: absolute;
+    left: 50%;
 }
 
-.item__completed:checked + .item__description{
+.item__completed:checked+.item__description {
     text-decoration: line-through;
-    font-style:italic;
-    font-weight:initial;
+    font-style: italic;
+    font-weight: initial;
 }
 
-.item__description{
-    border:none;
+.item__description {
+    border: none;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*
+Mobile first page width setting
+-------------------------------
+Set all 'width-<size>' CSS classes to % of viewport width by default
+e.g. .width-small, .width-medium, .width-large ... */
+[class*='width-'] {
+    max-width: 90vw;
+}
+
+/*
+Larger viewport page width overrides
+------------------------------------
+Override screen width mobile-first settings for larger viewports */
+@media only screen and (min-width: 768px) {
+    .width-small {
+        max-width: 20rem;
+    }
+
+    .width-medium {
+        max-width: 40rem;
+    }
+
+    .width-large {
+        max-width: 60rem;
+    }
 }
