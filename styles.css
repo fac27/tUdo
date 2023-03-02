@@ -1,0 +1,29 @@
+.item{
+    display: flex;
+    flex-flow: row nowrap;
+    align-items:center;
+}
+
+.item__completed{
+    width:50px;
+    visibility:hidden;
+    position:relative;
+}
+
+.item__completed:not(checked)::after{ 
+    visibility:visible;
+    content: '\0021';
+    position:absolute;
+    left:50%;
+}
+
+.item__completed:checked::after{
+    visibility:visible;
+    content:'\2713';
+    position:absolute;
+    left:50%;
+}
+
+.item__description{
+    border:none;
+}
