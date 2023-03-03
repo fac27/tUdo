@@ -1,7 +1,20 @@
-import { Task, TaskStatus } from "./modules/task-objects.js";
+import { Task, TaskStatus, TaskCollection } from "./modules/task-objects.js";
 
-const test = new Task("Get eggs", TaskStatus.Pending);
-console.log("Task: " + test.description + "\nStatus: " + test.getStatusText());
+//localStorage.clear();
+
+const taskCollection  = new TaskCollection();
+// let newTask = new Task("Buy milk", TaskStatus.Pending);
+// taskCollection.addTask(newTask);
+// newTask = new Task ("Climb mountain", TaskStatus.InProgress);
+// taskCollection.addTask(newTask);
+// newTask = new Task ("Tickle Sammy", TaskStatus.Pending);
+// taskCollection.addTask(newTask);
+// newTask = new Task ("Tickle Noah", TaskStatus.Pending);
+// taskCollection.addTask(newTask);
+taskCollection.getAllTasksFromStorage();
+taskCollection.allTasks.forEach((task) => {
+    console.log(`Description: ${task.description}, Status: ${task.getStatusText()}`);
+});
 
 const canvas = document.querySelector('#canvas');
 
@@ -20,7 +33,7 @@ const newItem = () => {
             <input type='checkbox' class='item__completed'</input>
             <input type="text" class='item__description' placeholder='add item ...'></input>
         </div>
-`);
+        `);
     canvas.append(newTask);
     let textInput = newTask.querySelector('.item__description');
 
@@ -38,7 +51,7 @@ const newItem = () => {
 function setStorage(tasks) {
     let updatedTaskList = JSON.stringify(tasks);
     localStorage.setItem('task-list', updatedTaskList);
-};
+}
 
 // collect from local storage
 function retrieveStorage() {
