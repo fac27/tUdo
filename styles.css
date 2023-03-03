@@ -1,13 +1,27 @@
+*{
+    font-size:18px;
+    font-family:sans-serif;
+}
+
+#canvas{
+    width:80vw;
+}
+
 .item{
     display: flex;
     flex-flow: row nowrap;
     align-items:center;
+    width:100%;
 }
 
 .item__completed{
     width:50px;
     visibility:hidden;
     position:relative;
+}
+
+.item__description{
+    width:90%;
 }
 
 .item__completed:not(checked)::after{ 
@@ -17,11 +31,21 @@
     left:50%;
 }
 
+.item__completed:not(checked) + .item__description{
+    font-weight:bold;
+}
+
 .item__completed:checked::after{
     visibility:visible;
     content:'\2713';
     position:absolute;
     left:50%;
+}
+
+.item__completed:checked + .item__description{
+    text-decoration: line-through;
+    font-style:italic;
+    font-weight:initial;
 }
 
 .item__description{
