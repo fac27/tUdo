@@ -10,14 +10,19 @@ const printHTML = (input) => {
 
 // new task template
 const newItem = () => {
-   let element = printHTML(`
+   let newTask = printHTML(`
         <div class='item'>
             <input type='checkbox' class='item__completed'</input>
             <input type="text" class='item__description' placeholder='add item ...'></input>
         </div>
 `);
-    canvas.append(element);
-    
+    canvas.append(newTask);
+    let textInput = newTask.querySelector('.item__description');
+
+    // event listener to add new items
+    textInput.addEventListener("keyup", event => {
+        enterNewItem(event, textInput);
+    });
 };
 
 
@@ -41,7 +46,7 @@ const currentTaskList = retrieveStorage();
 
 //create a new task object to send to local storage
 function newTaskObject(text, done=false) {
-    currentTaskList.push({
+    currentTaskList.unshift({
         completed: done,
         description: text
     });
@@ -49,6 +54,10 @@ function newTaskObject(text, done=false) {
     setStorage(currentTaskList);
 }
 
+// update tasks after being initialised
+function updateTask(){
+
+}
 
 // initialise the page /////////////////////
 ///////////////////////////////////////////
@@ -73,19 +82,17 @@ function renderTaskList() {
     };
 }
 
-renderTaskList()
-
 // keyboard commands ////////////////////////
 ////////////////////////////////////////////
-const tasks = document.querySelectorAll('.item__description');
-tasks.forEach(task => {
-    task.addEventListener('keyup', e => {
-        if (e.key === 'Enter'){
-            let description = task.value;
-            let done = task.parentElement.querySelector('input').checked;
-            newTaskObject(description, done);
-            console.dir(currentTaskList);
-            renderTaskList();
-        }
-    })
-});
+function enterNewItem(keyPress, activeElement){
+     if (keyPress.key === "Enter") {
+       let description = activeElement.value;
+       let done = activeElement.parentElement.querySelector("input").checked;
+       newTaskObject(description, done);
+       renderTaskList();
+     }
+};
+
+// initialise the page ///////////////////////
+/////////////////////////////////////////////
+renderTaskList()
