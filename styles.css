@@ -1,60 +1,131 @@
+:root {
+  --color-base: #dfdbd8;
+  --color-highlights: #7aa39a;
+  --color-text: #070502;
+
+  /* These alternatives could be the DARK MODE
+    --color-base: #070502;
+    --color-highlights: #5e7783;
+    --color-text:#dfdbd8 */
+}
+
 * {
-    font-size: 18px;
-    font-family: sans-serif;
+  font-size: 20px;
+  font-family: sans-serif;
+  color: var(--color-text);
+  box-sizing: border-box;
 }
 
+body {
+  background-color: var(--color-base);
+}
+
+/* navigation bar */
+.nav-bar {
+  height: 10vh;
+  width: 100vw;
+  padding: 0.5rem 1rem;
+  position: relative;
+}
+
+.nav-bar__info--logo {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.nav-bar__info--legend {
+  display: none;
+  z-index: 4;
+  position: absolute;
+  top: 0.8em;
+  left: 1.5em;
+  border: 2px solid black;
+  padding: 0.2em;
+  background-color: var(--color-highlights);
+}
+
+.nav-bar__info--logo:active + .nav-bar__info--legend {
+  display: block;
+}
+
+/* canvas */
 #canvas {
-    width: 80vw;
+  display: grid;
+  height: 90vh;
+  width: 100vw;
+  position: absolute;
+  top: 10%;
+  left: 0;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(auto-fill, 2rem);
+  padding: 1em 0;
+  background: linear-gradient(var(--color-base), var(--color-highlights));
 }
 
+/* .item > checkbox and text input */
 .item {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  width: 100%;
+  grid-column: 2 / span 4;
 }
 
 .item__completed {
-    width: 50px;
-    visibility: hidden;
-    position: relative;
+  width: 1em;
+  visibility: hidden;
+  position: relative;
 }
 
 .item__description {
-    width: 90%;
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  text-overflow: ellipsis;
 }
 
+/* newest list item being defined */
+.item:first-of-type {
+  flex-direction: row-reverse;
+}
+
+.item:first-of-type > .item__completed::after {
+  display: none;
+}
+
+.item:first-of-type > .item__description {
+  font-weight: initial;
+}
+
+/* items not checked off -- still to do */
 .item__completed:not(checked)::after {
-    visibility: visible;
-    content: '\0021';
-    position: absolute;
-    left: 50%;
+  visibility: visible;
+  content: "\0021";
+  position: absolute;
+  left: 15%;
 }
 
-.item__completed:not(checked)+.item__description {
-    font-weight: bold;
+.item__completed:not(checked) + .item__description {
+  font-weight: bold;
 }
 
+/* items checked off -- completed */
 .item__completed:checked::after {
-    visibility: visible;
-    content: '\2713';
-    position: absolute;
-    left: 50%;
+  visibility: visible;
+  content: "\2713";
+  position: absolute;
+  left: 15%;
 }
 
-.item__completed:checked+.item__description {
-    text-decoration: line-through;
-    font-style: italic;
-    font-weight: initial;
-}
-
-.item__description {
-    border: none;
+.item__completed:checked + .item__description {
+  text-decoration: line-through;
+  font-style: italic;
+  font-weight: initial;
 }
 
 .center {
-    margin-left: auto;
-    margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /*
@@ -62,8 +133,8 @@ Mobile first page width setting
 -------------------------------
 Set all 'width-<size>' CSS classes to % of viewport width by default
 e.g. .width-small, .width-medium, .width-large ... */
-[class*='width-'] {
-    max-width: 90vw;
+[class*="width-"] {
+  max-width: 90vw;
 }
 
 /*
@@ -71,15 +142,15 @@ Larger viewport page width overrides
 ------------------------------------
 Override screen width mobile-first settings for larger viewports */
 @media only screen and (min-width: 768px) {
-    .width-small {
-        max-width: 20rem;
-    }
+  .width-small {
+    max-width: 20rem;
+  }
 
-    .width-medium {
-        max-width: 40rem;
-    }
+  .width-medium {
+    max-width: 40rem;
+  }
 
-    .width-large {
-        max-width: 60rem;
-    }
+  .width-large {
+    max-width: 60rem;
+  }
 }
