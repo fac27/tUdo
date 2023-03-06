@@ -2,6 +2,7 @@ export class Task {
     constructor(description, status = TaskStatus.Pending) {
         this.description = description;
         this.status = status;
+        this.template = document.createElement('template');
     }
 
     static newItemTemplate = `
@@ -15,8 +16,7 @@ export class Task {
         return Object.keys(TaskStatus).find((key) => TaskStatus[key] === this.status);
     }
     getNode() {
-        let template = document.createElement('template');
-        template.innerHTML = this.newItemTemplate.trim();
+        this.template.innerHTML = this.newItemTemplate.trim();
         return template.content.firstElementChild;
     }
     getTaskAsObject() {
@@ -46,6 +46,7 @@ export class TaskCollection {
 
     deleteTask(index) {
         this.allTasks = this.allTasks.splice(index,1);
+        this.saveAllTasksToStorage();
     }
 
     getAllTasksFromStorage() {

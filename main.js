@@ -1,16 +1,16 @@
 import { Task, TaskStatus, TaskCollection } from "./modules/task-objects.js";
 
-//localStorage.clear();
+localStorage.clear();
 
 const taskCollection  = new TaskCollection();
-// let newTask = new Task("Buy milk", TaskStatus.Pending);
-// taskCollection.addTask(newTask);
-// newTask = new Task ("Climb mountain", TaskStatus.InProgress);
-// taskCollection.addTask(newTask);
-// newTask = new Task ("Tickle Sammy", TaskStatus.Pending);
-// taskCollection.addTask(newTask);
-// newTask = new Task ("Tickle Noah", TaskStatus.Pending);
-// taskCollection.addTask(newTask);
+let newTask = new Task("Buy milk", TaskStatus.Pending);
+taskCollection.addTask(newTask);
+newTask = new Task ("Climb mountain", TaskStatus.InProgress);
+taskCollection.addTask(newTask);
+newTask = new Task ("Write code", TaskStatus.Pending);
+taskCollection.addTask(newTask);
+newTask = new Task ("Learn React", TaskStatus.Pending);
+taskCollection.addTask(newTask);
 taskCollection.getAllTasksFromStorage();
 taskCollection.allTasks.forEach((task) => {
     console.log(`Description: ${task.description}, Status: ${task.getStatusText()}`);
