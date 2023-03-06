@@ -1,4 +1,23 @@
-const canvas = document.querySelector("#canvas");
+import { Task, TaskStatus, TaskCollection } from "./modules/task-objects.js";
+
+localStorage.clear();
+
+const taskCollection  = new TaskCollection();
+let newTask = new Task("Buy milk", TaskStatus.Pending);
+taskCollection.addTask(newTask);
+newTask = new Task ("Climb mountain", TaskStatus.InProgress);
+taskCollection.addTask(newTask);
+newTask = new Task ("Write code", TaskStatus.Pending);
+taskCollection.addTask(newTask);
+newTask = new Task ("Learn React", TaskStatus.Pending);
+taskCollection.addTask(newTask);
+taskCollection.getAllTasksFromStorage();
+taskCollection.allTasks.forEach((task) => {
+    console.log(`Description: ${task.description}, Status: ${task.getStatusText()}`);
+});
+
+const canvas = document.querySelector('#canvas');
+
 
 // creating new templates //////////////////
 ///////////////////////////////////////////
@@ -45,16 +64,18 @@ const currentTaskList = retrieveStorage();
 
 //create a new task object to send to local storage
 function newTaskObject(text, done = false) {
-  currentTaskList.unshift({
-    completed: done,
-    description: text,
-  });
+    currentTaskList.unshift({
+        completed: done,
+        description: text
+    });
 
-  setStorage(currentTaskList);
+    setStorage(currentTaskList);
 }
 
 // update tasks after being initialised
-function updateTask() {}
+function updateTask() {
+
+}
 
 // initialise the page /////////////////////
 ///////////////////////////////////////////
@@ -65,7 +86,6 @@ function renderTaskList() {
     let { description, completed: done } = currentTaskList[i];
 
     newItem();
-
     let allTaskDescriptions = document.querySelectorAll(".item__description");
     let taskDescription = allTaskDescriptions[allTaskDescriptions.length - 1];
     taskDescription.value = description;
@@ -82,13 +102,13 @@ function renderTaskList() {
 // keyboard commands ////////////////////////
 ////////////////////////////////////////////
 function enterNewItem(keyPress, activeElement) {
-  if (keyPress.key === "Enter") {
-    let description = activeElement.value;
-    let done = activeElement.parentElement.querySelector("input").checked;
-    newTaskObject(description, done);
-    renderTaskList();
-  }
-}
+    if (keyPress.key === "Enter") {
+        let description = activeElement.value;
+        let done = activeElement.parentElement.querySelector("input").checked;
+        newTaskObject(description, done);
+        renderTaskList();
+    }
+};
 
 // initialise the page ///////////////////////
 /////////////////////////////////////////////
