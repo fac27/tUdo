@@ -35,19 +35,21 @@ const newItem = (object) => {
       <input type='checkbox' class='item__completed' ${checkedItem}</input>
       <input type="text" class='item__description' placeholder='add item ...'></input>
     </div>
-  `);
-  canvas.append(newTask);
+    `);
+    canvas.append(newTask);
+    
+    let textInput = newTask.querySelector('.item__description');
+    textInput.value = description;
+  };
+  
+  // initialise the page /////////////////////
+  ///////////////////////////////////////////
+  function renderTaskList() {
+    canvas.innerHTML = "";
+    newItem({description:''});
+    let emptyTask = document.querySelector('.item__description');
+    emptyTask.addEventListener('keyup', e => enterNewItem(e, emptyTask    ));
 
-  let textInput = newTask.querySelector('.item__description');
-  textInput.value = description;
-  textInput.addEventListener('keyup', e => enterNewItem(e, textInput));
-};
-
-// initialise the page /////////////////////
-///////////////////////////////////////////
-function renderTaskList() {
-  canvas.innerHTML = "";
-  newItem({description:''});
   taskCollection.getAllTasksFromStorage();
 
   for (let i = 0; i < taskCollection.allTasks.length; i++) {
@@ -55,17 +57,18 @@ function renderTaskList() {
   }
 }
 
+
 // keyboard commands ////////////////////////
 ////////////////////////////////////////////
 function enterNewItem(keyPress, activeElement) {
-    if (keyPress.key === "Enter") {
-        let description = activeElement.value;
-        let done = activeElement.parentElement.querySelector("input").checked;
-        let status = done === true ? TaskStatus.Complete : TaskStatus.InProgress;
-        taskCollection.addTask(new Task(description, status));
-        taskCollection.saveAllTasksToStorage;
-        renderTaskList();
-    }
+  if (keyPress.key === "Enter") {
+    let description = activeElement.value;
+    let done = activeElement.parentElement.querySelector("input").checked;
+    let status = done === true ? TaskStatus.Complete : TaskStatus.InProgress;
+    taskCollection.addTask(new Task(description, status));
+    taskCollection.saveAllTasksToStorage;
+    renderTaskList();
+  }
 };
 
 // initialise the page ///////////////////////
