@@ -49,6 +49,14 @@ export class TaskCollection {
         this.saveAllTasksToStorage();
     }
 
+    editTask(index, newDescription, newStatus) {
+        let currentTask = this.allTasks[index];
+        currentTask.description = newDescription;
+        currentTask.status = newStatus;
+        
+        this.saveAllTasksToStorage();
+    }
+
     getAllTasksFromStorage() {
         const taskListFromStorage = localStorage.getItem('task-list') || '[]';
         const taskListAsArray = JSON.parse(taskListFromStorage);

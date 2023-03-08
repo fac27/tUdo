@@ -72,34 +72,64 @@ function enterNewItem(keyPress, activeElement) {
   }
 };
 
-function deleteItem(clicked){
+function deleteItem(edited){
   let items = Array.from(document.querySelectorAll('.item__description'));
-  // let clickedTask = clicked.textContent;
-  let index = items.indexOf(clicked) - 1;
+  let index = items.indexOf(edited) - 1;
   
-  console.log(`I'm deleting the task in index ${index}`);
   taskCollection.deleteTask(index);
-  // setTimeout(renderTaskList(), 1000);
   renderTaskList();
 }
 
-// listen for Key Strokes //////////////////////////
+function editItem(edited){
+  let items = Array.from(document.querySelectorAll('.item__description'));
+  let index = items.indexOf(edited) - 1;
+  let newDescription = edited.value;
+  let newStatus = edited.parentElement.firstElementChild.checked ? 2 : 1;
+
+  taskCollection.editTask(index, newDescription, newStatus);
+  renderTaskList();
+}
+
+// listen for User Input //////////////////////////
 ///// all event listeners can be stored here //////
 function listenForKeyStrokes(){
+  // listen for keyboard input
   let tasksOnPage = Array.from(document.querySelectorAll(".item__description"));
-  let typeToDelete = new RegExp(/(\/d)$/)
+  let typeToDelete = new RegExp(/(\/d)$/);
+  let typeToComplete = new RegExp(/(\/done)$/);
+
+  let sansTypeToComplete = new RegExp(/(^\/done)./);
   
   tasksOnPage.forEach(task => {
-    task.addEventListener('keydown', e => {
+    task.addEventListener('keyup', e => {
       if(e.key === 'Enter'){
-        if(typeToDelete.test(task.value)) {
-          console.log(task.value);
-          deleteItem(task);
+        if(typeToDelete.test(task.value)) deleteItem(task);
+
+        if(typeToComplete.test(task.value)) {
+          let checkBox = task.previousElementSibling;
+          checkBox.checked = true;
+          task.value = task.value.replace(typeToComplete, '');
+          editItem(task);
         };
+        
+        //further actions go here
+        editItem(task); 
       }
     });
   });
-  
+
+  // listen for checkbox interaction
+  let checkBoxes = Array.from(document.querySelectorAll('.item__completed'));
+  checkBoxes.forEach(box => {
+    box.addEventListener('change', () => {
+      let index = Array.from(document.querySelectorAll('.item__completed')).indexOf(box) - 1;
+      let newDescription = box.nextElementSibling.value;
+      let newStatus = box.checked === true ? 2 : 1;
+
+      taskCollection.editTask(index, newDescription, newStatus);
+
+    })
+  })
 }
 // initialise the page ///////////////////////
 /////////////////////////////////////////////
