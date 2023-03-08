@@ -90,7 +90,7 @@ body {
 }
 
 .item:first-of-type > .item__completed::after {
-  /* display: none; */
+  display: none;
 }
 
 .item:first-of-type > .item__description {
