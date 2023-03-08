@@ -45,7 +45,7 @@ export class TaskCollection {
     }
 
     deleteTask(index) {
-        this.allTasks = this.allTasks.splice(index,1);
+        this.allTasks.splice(index, 1);
         this.saveAllTasksToStorage();
     }
 

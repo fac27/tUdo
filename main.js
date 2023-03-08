@@ -51,10 +51,11 @@ const newItem = (object) => {
     emptyTask.addEventListener('keyup', e => enterNewItem(e, emptyTask    ));
 
   taskCollection.getAllTasksFromStorage();
-
+  
   for (let i = 0; i < taskCollection.allTasks.length; i++) {
     newItem(taskCollection.allTasks[i]);
   }
+  listenForKeyStrokes();
 }
 
 
@@ -71,6 +72,35 @@ function enterNewItem(keyPress, activeElement) {
   }
 };
 
+function deleteItem(clicked){
+  let items = Array.from(document.querySelectorAll('.item__description'));
+  // let clickedTask = clicked.textContent;
+  let index = items.indexOf(clicked) - 1;
+  
+  console.log(`I'm deleting the task in index ${index}`);
+  taskCollection.deleteTask(index);
+  // setTimeout(renderTaskList(), 1000);
+  renderTaskList();
+}
+
+// listen for Key Strokes //////////////////////////
+///// all event listeners can be stored here //////
+function listenForKeyStrokes(){
+  let tasksOnPage = Array.from(document.querySelectorAll(".item__description"));
+  let typeToDelete = new RegExp(/(\/d)$/)
+  
+  tasksOnPage.forEach(task => {
+    task.addEventListener('keydown', e => {
+      if(e.key === 'Enter'){
+        if(typeToDelete.test(task.value)) {
+          console.log(task.value);
+          deleteItem(task);
+        };
+      }
+    });
+  });
+  
+}
 // initialise the page ///////////////////////
 /////////////////////////////////////////////
 renderTaskList();
