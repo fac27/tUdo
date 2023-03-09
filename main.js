@@ -15,6 +15,25 @@ const taskCollection = new TaskCollection();
 // });
 
 const canvas = document.querySelector("#canvas");
+const infoButton = document.querySelector(".nav-bar");
+const toggleThemeButton = document.querySelector(".nav-bar__toggle-theme--logo");
+
+// Disable context menu on nav-bar
+infoButton.addEventListener("contextmenu", (e) => e.preventDefault());
+// Set up toggle theme event handler
+toggleThemeButton.addEventListener("click", (e) => {
+  toggleTheme(e);
+});
+
+// Get all keyboard navigable buttons and capture Enter and Space pressed events for accessibility
+const allNavBarButtons = document.querySelectorAll(".keyboard-navigable");
+for (let button of allNavBarButtons) {
+    button.addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === "Space") {
+            e.target.click();
+        }
+    })
+}
 
 // creating new templates //////////////////
 ///////////////////////////////////////////
@@ -75,7 +94,6 @@ function deleteItem(edited) {
     document.querySelectorAll(".item__description")
   ).splice(1);
   let index = items.indexOf(edited);
-
   taskCollection.deleteTask(index);
   renderTaskList();
 }
@@ -109,6 +127,7 @@ function untickItem(edited) {
 // listen for User Input //////////////////////////
 ///// all event listeners can be stored here //////
 function listenForKeyStrokes() {
+
   // listen for keyboard input
   let tasksOnPage = Array.from(
     document.querySelectorAll(".item__description")
@@ -142,6 +161,20 @@ function listenForKeyStrokes() {
       taskCollection.editTask(index, newDescription, newStatus);
     });
   });
+  
+function toggleTheme(event) {
+  const element = event.srcElement;
+  const bodyElement = document.querySelector("body");
+
+  const currentTheme = bodyElement.getAttribute("data-theme");
+
+  if (currentTheme === "light") {
+    element.innerHTML = "&#127774";
+    bodyElement.setAttribute("data-theme", "dark");
+  } else {
+    element.innerHTML = "&#127772";
+    bodyElement.setAttribute("data-theme", "light");
+  }
 }
 // initialise the page ///////////////////////
 /////////////////////////////////////////////
