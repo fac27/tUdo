@@ -125,10 +125,10 @@ function toggleTheme(event) {
   const currentTheme = bodyElement.getAttribute("data-theme");
 
   if (currentTheme === "light") {
-    element.innerHTML = "&#127772";
+    element.innerHTML = "&#127774";
     bodyElement.setAttribute("data-theme", "dark");
   } else {
-    element.innerHTML = "&#127774";
+    element.innerHTML = "&#127772";
     bodyElement.setAttribute("data-theme", "light");
   }
 }
