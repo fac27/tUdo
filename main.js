@@ -71,7 +71,9 @@ function enterNewItem(keyPress, activeElement) {
 }
 
 function deleteItem(edited) {
-  let items = Array.from(document.querySelectorAll(".item__description")).splice(1);
+  let items = Array.from(
+    document.querySelectorAll(".item__description")
+  ).splice(1);
   let index = items.indexOf(edited);
 
   taskCollection.deleteTask(index);
@@ -79,7 +81,9 @@ function deleteItem(edited) {
 }
 
 function editItem(edited) {
-  let items = Array.from(document.querySelectorAll(".item__description")).splice(1);
+  let items = Array.from(
+    document.querySelectorAll(".item__description")
+  ).splice(1);
   let index = items.indexOf(edited);
   let newDescription = edited.value;
   let newStatus = edited.parentElement.firstElementChild.checked ? 2 : 1;
@@ -88,44 +92,50 @@ function editItem(edited) {
   renderTaskList();
 }
 
+function tickItem(edited) {
+  let checkBox = edited.previousElementSibling;
+  checkBox.checked = true;
+  edited.value = edited.value.replace(/(\/done)$/, "");
+  editItem(edited);
+}
+
+function untickItem(edited) {
+  let checkBox = edited.previousElementSibling;
+  checkBox.checked = false;
+  edited.value = edited.value.replace(/(\/pending)$/, "");
+  editItem(edited);
+}
+
 // listen for User Input //////////////////////////
 ///// all event listeners can be stored here //////
 function listenForKeyStrokes() {
   // listen for keyboard input
-  let tasksOnPage = Array.from(document.querySelectorAll(".item__description")).splice(1);
+  let tasksOnPage = Array.from(
+    document.querySelectorAll(".item__description")
+  ).splice(1);
+
   let typeToDelete = new RegExp(/(\/delete)$/);
   let typeToComplete = new RegExp(/(\/done)$/);
   let typeToUntick = new RegExp(/(\/pending)$/);
 
   tasksOnPage.forEach((task) => {
     task.addEventListener("keyup", (e) => {
-      if (e.key === "Enter") {
-        if (typeToDelete.test(task.value)){
-         deleteItem(task); 
-        }else if (typeToComplete.test(task.value)) {
-          let checkBox = task.previousElementSibling;
-          checkBox.checked = true;
-          task.value = task.value.replace(typeToComplete, "");
-          editItem(task);
-        }else if(typeToUntick.test(task.value)) {
-          let checkBox = task.previousElementSibling;
-          checkBox.checked = false;
-          task.value = task.value.replace(typeToUntick, "");
-          editItem(task);
-        }else{  
-          editItem(task);
-        }
-      }
+      if (e.key !== "Enter") return;
+      if (typeToDelete.test(task.value)) return deleteItem(task);
+      if (typeToComplete.test(task.value)) return tickItem(task);
+      if (typeToUntick.test(task.value)) return untickItem(task);
+      editItem(task);
     });
   });
 
   // listen for checkbox interaction
-  let checkBoxes = Array.from(document.querySelectorAll(".item__completed"));
+  let checkBoxes = Array.from(
+    document.querySelectorAll(".item__completed")
+  ).splice(1);
+
   checkBoxes.forEach((box) => {
     box.addEventListener("change", () => {
-      let index =
-        Array.from(document.querySelectorAll(".item__completed")).indexOf(box) -
-        1;
+      let index = checkBoxes.indexOf(box);
       let newDescription = box.nextElementSibling.value;
       let newStatus = box.checked === true ? 2 : 1;
 
