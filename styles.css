@@ -1,12 +1,13 @@
-:root {
+[data-theme="dark"] {
+    --color-base: #070502;
+    --color-highlights: #5e7783;
+    --color-text:#dfdbd8;
+}
+
+[data-theme="light"] {
   --color-base: #dfdbd8;
   --color-highlights: #7aa39a;
   --color-text: #070502;
-
-  /* These alternatives could be the DARK MODE
-    --color-base: #070502;
-    --color-highlights: #5e7783;
-    --color-text:#dfdbd8 */
 }
 
 * {
@@ -28,9 +29,25 @@ body {
   position: relative;
 }
 
+/* Select second adjacent navbar logo button so gap can be inserted */
+[class *= "nav-bar__"] + * {
+  margin-left: 1em;
+}
+
 .nav-bar__info--logo {
   font-size: 1.5rem;
   cursor: pointer;
+  user-select: none;
+}
+
+.nav-bar__toggle-theme--logo {
+  font-size: 1.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.nav-bar__toggle-theme--logo:active {
+  content: "\263E";
 }
 
 .nav-bar__info--legend {
