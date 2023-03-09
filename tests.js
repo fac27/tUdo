@@ -27,27 +27,112 @@ function isDifferent(expected, output, message = `you expected ${expected} and g
     }
 }
 
+const pressEnter = new KeyboardEvent('keyup', {key: 'Enter'});
 // production tests ////////////////////////
-///////////////////////////////////////////
-// test(`typing a new task adds it to the stored list`, () => {
-//     let expected = taskCollection.allTasks.length + 1;
+/////////////////////////////////////////
+function typeToCreate() {
+    let expected = 'test task';
+
+    let emptyTask = document.querySelectorAll('.item__description')[0];
+    emptyTask.value = 'test task';
+    emptyTask.dispatchEvent(pressEnter);
     
-//     let inputElements = document.querySelectorAll('.item__description');
-//     inputElements[0].value = 'test task';
-//     inputElements[0].dispatchEvent(new KeyboardEvent('keyup', {key: 'Enter'}));
+    let testInput = document.querySelectorAll('.item__description')[1];
+    testInput.classList.add('test-task');
 
-//     taskCollection.getAllTasksFromStorage();
-//     let output = taskCollection.allTasks.length;
-
-//     taskCollection.deleteTask(-1);
+    taskCollection.getAllTasksFromStorage();
+    let output = testInput.value;
     
-//     isEqual(expected, output);
-// });
+    isEqual(expected, output, 'created a test task');
+};
 
-test('the number of tasks displayed matches the number of task objects in storage', () => { 
+function typeToEdit() {
+    let expected = 'changed task';
+
+    let testInput = document.querySelector('.test-task');
+    testInput.value = 'changed task';
+    testInput.dispatchEvent(pressEnter);
+
+    let latestTask = document.querySelectorAll('.item__description')[1];
+    latestTask.classList.add('test-task');
+
+    let output = testInput.value;
+
+    isEqual(expected, output, `the test task is displaying ${output}`);
+}
+
+function typeToComplete() {
+    let expected = true;
+
+    let testInput = document.querySelector('.test-task');
+    testInput.value += '/done';
+    testInput.dispatchEvent(pressEnter);
+
+    let latestTask = document.querySelectorAll('.item__description')[1];
+    latestTask.classList.add('test-task');
+
+    let output = testInput.previousElementSibling.checked;
+
+    isEqual(expected, output);
+};
+
+function typeToUncheck() {
+    let expected = false;
+
+    let testInput = document.querySelector('.test-task');
+    testInput.value += '/pending';
+    testInput.dispatchEvent(pressEnter);
+
+    let latestTask = document.querySelectorAll('.item__description')[1];
+    latestTask.classList.add('test-task');
+
+    let output = testInput.previousElementSibling.checked;
+
+    isEqual(expected, output);
+};
+
+function typeToDelete() {
+    let expected = 0;
+
+    let testTask = document.querySelector('.test-task');
+    testTask.value += ' /delete';
+    testTask.dispatchEvent(pressEnter);
+
+    let output = document.querySelectorAll('.test-task').length;
+
+    isEqual(expected,output, 'deleted a test task');
+};
+
+function trackTaskListInStorage() { 
     let itemsDisplayed = document.querySelectorAll('.item__description').length;
     taskCollection.getAllTasksFromStorage();
     let itemsSaved = taskCollection.allTasks.length;
+        
+    isEqual(itemsDisplayed, itemsSaved + 1, `${itemsDisplayed - 1} out of ${itemsSaved} tasks displayed`);
+};
+
+function runTests(){
+    let allStrings = [
+        'typing a new task adds it to the stored list', 
+        'editing an existing item will change the associated task',
+        'typing "/done" marks a task as completed', 
+        'typing "/pending" marks a task as pending',
+        'typing "/delete" removes a task', 
+        'the number of tasks displayed matches the number of task objects in storage'
+    ];
+
+    let allTests = [
+        typeToCreate, 
+        typeToEdit,
+        typeToComplete, 
+        typeToUncheck,
+        typeToDelete, 
+        trackTaskListInStorage
+    ];
     
-    isEqual(itemsDisplayed, itemsSaved + 1, `${itemsDisplayed - 1} are being shown and ${itemsSaved} are stored`);
-});
+    for(let i = 0; i < allTests.length; i++){
+        setTimeout(() => test(allStrings[i], allTests[i]), i * 1000);
+    }
+}
+
+runTests()

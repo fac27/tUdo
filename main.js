@@ -89,35 +89,79 @@ function enterNewItem(keyPress, activeElement) {
   }
 }
 
-function deleteItem(clicked) {
-  let items = Array.from(document.querySelectorAll(".item__description"));
-  // let clickedTask = clicked.textContent;
-  let index = items.indexOf(clicked) - 1;
-
-  console.log(`I'm deleting the task in index ${index}`);
+function deleteItem(edited) {
+  let items = Array.from(
+    document.querySelectorAll(".item__description")
+  ).splice(1);
+  let index = items.indexOf(edited);
   taskCollection.deleteTask(index);
-  // setTimeout(renderTaskList(), 1000);
   renderTaskList();
 }
 
-// listen for Key Strokes //////////////////////////
-///// all event listeners can be stored here //////
-function listenForKeyStrokes() {
-  let tasksOnPage = Array.from(document.querySelectorAll(".item__description"));
-  let typeToDelete = new RegExp(/(\/d)$/);
+function editItem(edited) {
+  let items = Array.from(
+    document.querySelectorAll(".item__description")
+  ).splice(1);
+  let index = items.indexOf(edited);
+  let newDescription = edited.value;
+  let newStatus = edited.parentElement.firstElementChild.checked ? 2 : 1;
 
-  tasksOnPage.forEach((task) => {
-    task.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        if (typeToDelete.test(task.value)) {
-          console.log(task.value);
-          deleteItem(task);
-        }
-      }
-    });
-  });
+  taskCollection.editTask(index, newDescription, newStatus);
+  renderTaskList();
 }
 
+function tickItem(edited) {
+  let checkBox = edited.previousElementSibling;
+  checkBox.checked = true;
+  edited.value = edited.value.replace(/(\/done)$/, "");
+  editItem(edited);
+}
+
+function untickItem(edited) {
+  let checkBox = edited.previousElementSibling;
+  checkBox.checked = false;
+  edited.value = edited.value.replace(/(\/pending)$/, "");
+  editItem(edited);
+}
+
+// listen for User Input //////////////////////////
+///// all event listeners can be stored here //////
+function listenForKeyStrokes() {
+
+  // listen for keyboard input
+  let tasksOnPage = Array.from(
+    document.querySelectorAll(".item__description")
+  ).splice(1);
+
+  let typeToDelete = new RegExp(/(\/delete)$/);
+  let typeToComplete = new RegExp(/(\/done)$/);
+  let typeToUntick = new RegExp(/(\/pending)$/);
+
+  tasksOnPage.forEach((task) => {
+    task.addEventListener("keyup", (e) => {
+      if (e.key !== "Enter") return;
+      if (typeToDelete.test(task.value)) return deleteItem(task);
+      if (typeToComplete.test(task.value)) return tickItem(task);
+      if (typeToUntick.test(task.value)) return untickItem(task);
+      editItem(task);
+    });
+  });
+
+  // listen for checkbox interaction
+  let checkBoxes = Array.from(
+    document.querySelectorAll(".item__completed")
+  ).splice(1);
+
+  checkBoxes.forEach((box) => {
+    box.addEventListener("change", () => {
+      let index = checkBoxes.indexOf(box);
+      let newDescription = box.nextElementSibling.value;
+      let newStatus = box.checked === true ? 2 : 1;
+
+      taskCollection.editTask(index, newDescription, newStatus);
+    });
+  });
+  
 function toggleTheme(event) {
   const element = event.srcElement;
   const bodyElement = document.querySelector("body");
