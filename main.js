@@ -52,6 +52,7 @@ const newItem = (object) => {
     <div class='item width-large'>
       <input type='checkbox' class='item__completed' ${checkedItem}</input>
       <input type="text" class='item__description' placeholder='add item ...'></input>
+      <button type='button' class='item__delete-button'>&#9988;</button>
     </div>
     `);
   canvas.append(newTask);
@@ -181,6 +182,15 @@ function listenForKeyStrokes() {
       taskCollection.editTask(index, newDescription, newStatus);
     });
   });
+
+  // listen for delete buttons
+  let deleteButtons = Array.from(document.querySelectorAll('.item__delete-button')).splice(1);
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      let selectedItem = button.parentElement.querySelector('.item__description');
+      deleteItem(selectedItem);
+    })
+  })
   
   //listen for navbar interaction
   let infoButton = document.querySelector('.nav-bar__info-logo');
