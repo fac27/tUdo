@@ -52,7 +52,7 @@ const newItem = (object) => {
     <div class='item width-large'>
       <input type='checkbox' class='item__completed' ${checkedItem}</input>
       <input type="text" class='item__description' placeholder='add item ...'></input>
-      <button type='button' class='item__delete-button'>&#9988;</button>
+      <button type='button' class='item__delete-button' tabindex='-1'>&#9988;</button>
     </div>
     `);
   canvas.append(newTask);
