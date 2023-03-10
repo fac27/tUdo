@@ -14,9 +14,15 @@ const taskCollection = new TaskCollection();
 //     console.log(`Description: ${task.description}, Status: ${task.getStatusText()}`);
 // });
 
+let showCompletedTasks = true;
 const canvas = document.querySelector("#canvas");
 const infoButton = document.querySelector(".nav-bar");
-const toggleThemeButton = document.querySelector(".nav-bar__toggle-theme--logo");
+const toggleThemeButton = document.querySelector(
+  ".nav-bar__toggle-theme--logo"
+);
+const toggleCompletedTasksButton = document.querySelector(
+  ".nav-bar__toggle-completed--logo"
+);
 
 // Disable context menu on nav-bar
 infoButton.addEventListener("contextmenu", (e) => e.preventDefault());
@@ -24,15 +30,20 @@ infoButton.addEventListener("contextmenu", (e) => e.preventDefault());
 toggleThemeButton.addEventListener("click", (e) => {
   toggleTheme(e);
 });
+// Set up toggle show/hide completed tasks event handler
+toggleCompletedTasksButton.addEventListener("click", (e) => {
+  toggleCompletedTasks(e);
+});
+
 
 // Get all keyboard navigable buttons and capture Enter and Space pressed events for accessibility
 const allNavBarButtons = document.querySelectorAll(".keyboard-navigable");
 for (let button of allNavBarButtons) {
-    button.addEventListener("keydown", e => {
-        if (e.key === "Enter" || e.key === "Space") {
-            e.target.click();
-        }
-    })
+  button.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === "Space") {
+      e.target.click();
+    }
+  });
 }
 
 // creating new templates //////////////////
@@ -62,13 +73,14 @@ const newItem = (object) => {
 
 // initialise the page /////////////////////
 ///////////////////////////////////////////
-function renderTaskList() {
+function renderTaskList(showCompleted = true) {
   canvas.innerHTML = "";
   newItem({ description: "" });
   let emptyTask = document.querySelector(".item__description");
   emptyTask.addEventListener("keyup", (e) => enterNewItem(e, emptyTask));
 
-  taskCollection.getAllTasksFromStorage();
+
+  taskCollection.getAllTasksFromStorage(showCompleted);
 
   for (let i = 0; i < taskCollection.allTasks.length; i++) {
     newItem(taskCollection.allTasks[i]);
@@ -147,7 +159,6 @@ function makeButtonActive(button){
 // listen for User Input //////////////////////////
 ///// all event listeners can be stored here //////
 function listenForKeyStrokes() {
-
   // listen for keyboard input
   let tasksOnPage = Array.from(
     document.querySelectorAll(".item__description")
@@ -181,11 +192,42 @@ function listenForKeyStrokes() {
       taskCollection.editTask(index, newDescription, newStatus);
     });
   });
-  
+
   //listen for navbar interaction
   let infoButton = document.querySelector('.nav-bar__info-logo');
   infoButton.addEventListener('click', () => makeButtonActive(infoButton));
 }
+
+function toggleTheme(event) {
+  const element = event.srcElement;
+  const bodyElement = document.querySelector("body");
+
+  const currentTheme = bodyElement.getAttribute("data-theme");
+
+  if (currentTheme === "light") {
+    element.innerHTML = "&#9728";
+    bodyElement.setAttribute("data-theme", "dark");
+  } else {
+    element.innerHTML = "&#9790";
+    bodyElement.setAttribute("data-theme", "light");
+  }
+}
+
+function toggleCompletedTasks(event) {
+  const element = event.srcElement;
+
+  if (showCompletedTasks) {
+    element.innerHTML = "&#9745";
+    renderTaskList(false);
+  } else {
+    element.innerHTML = "&#9744";
+    renderTaskList();  // <<<<------------------- THIS IS IN THE WRONG PLACE TO WORK
+  }
+  showCompletedTasks = !showCompletedTasks;
+}
+
 // initialise the page ///////////////////////
 /////////////////////////////////////////////
+
 renderTaskList();
+

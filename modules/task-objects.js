@@ -59,9 +59,15 @@ export class TaskCollection {
     this.saveAllTasksToStorage();
   }
 
-  getAllTasksFromStorage() {
+  getAllTasksFromStorage(showCompleted = true) {
     const taskListFromStorage = localStorage.getItem("task-list") || "[]";
-    const taskListAsArray = JSON.parse(taskListFromStorage);
+    let taskListAsArray = JSON.parse(taskListFromStorage);
+    if (!showCompleted) {
+      taskListAsArray = taskListAsArray.filter(
+        (task) => task["status"] != TaskStatus.Complete
+      );
+    }
+
     this.allTasks = [];
     taskListAsArray.forEach((taskObjectFromStorage) => {
       this.allTasks.push(
