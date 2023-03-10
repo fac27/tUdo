@@ -7,19 +7,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css"/>
     <script src="main.js" type="module" defer></script>
-    <script src="tests.js" type='module' defer></script>
+    <!-- <script src="tests.js" type='module' defer></script> -->
     <title>tUdo</title>
 </head>
 
 <body data-theme="dark">
     <header>
         <nav class="nav-bar">
-            <span class="nav-bar__info--logo keyboard-navigable" tabindex="0">&nbsp&#8505&nbsp</span>
-            <p class="nav-bar__info--legend">
-                &#8626; to add a new item <br>
-                '/delete' to delete an item<br>
-                '/done' to mark as complete<br>
-                '/pending' to mark as to do
+        <button type="button" class="nav-bar__info-logo keyboard-navigable" tabindex="0">&nbsp&#8505&nbsp</button>
+            <p class="nav-bar__info-legend">
+                <span class="legend--detail">
+                    &#8626;
+                </span> to add a new item <br>
+                <span class="legend--detail">
+                    '/delete'
+                </span> to delete an item<br>
+                <span class="legend--detail">
+                    '/done'
+                </span> to mark as complete<br>
+                <span class='legend--detail'>
+                    '/pending'
+                </span> to mark as to do
             </p>
             <span class="nav-bar__toggle-theme--logo keyboard-navigable" tabindex="0">&#9728</span>
             <span class="nav-bar__toggle-completed--logo keyboard-navigable" tabindex="0">&#9744;</span>

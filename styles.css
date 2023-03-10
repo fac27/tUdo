@@ -24,9 +24,14 @@ body {
 /* navigation bar */
 .nav-bar {
   height: 10vh;
-  width: 100vw;
+  width: 90vw;
+  margin:auto;
   padding: 0.5rem 1rem;
   position: relative;
+  display:flex;
+  flex-flow:row nowrap;
+  align-items:center;
+  justify-content:space-between;
 }
 
 /* Select second adjacent navbar logo button so gap can be inserted */
@@ -34,10 +39,14 @@ body {
   margin-left: 1em;
 }
 
-.nav-bar__info--logo {
-  font-size: 1.5rem;
+.nav-bar__info-logo {
+  background:none;
+  border:none;
   cursor: pointer;
   user-select: none;
+  content: '\2139';
+  font-size: 1.5rem;
+  padding:0;
 }
 
 .nav-bar__toggle-theme--logo {
@@ -56,7 +65,7 @@ body {
   content: "\263E";
 }
 
-.nav-bar__info--legend {
+.nav-bar__info-legend {
   display: none;
   z-index: 4;
   position: absolute;
@@ -67,8 +76,16 @@ body {
   background-color: var(--color-highlights);
 }
 
-.nav-bar__info--logo:active + .nav-bar__info--legend {
+.legend--detail{
+  color:var(--color-base);
+}
+
+.nav-bar__info-logo--active + .nav-bar__info-legend {
   display: block;
+}
+
+.nav-bar__info-logo:focus + .nav-bar__info-legend {
+display: block;
 }
 
 /* canvas */

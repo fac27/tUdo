@@ -136,6 +136,26 @@ function untickItem(edited) {
   editItem(edited);
 }
 
+function toggleTheme(event) {
+  const element = event.srcElement;
+  const bodyElement = document.querySelector("body");
+
+  const currentTheme = bodyElement.getAttribute("data-theme");
+
+  if (currentTheme === "light") {
+    element.innerHTML = "&#127774";
+    bodyElement.setAttribute("data-theme", "dark");
+  } else {
+    element.innerHTML = "&#127772";
+    bodyElement.setAttribute("data-theme", "light");
+  }
+}
+
+function makeButtonActive(button){
+  button.classList.toggle('nav-bar__info-logo--active');
+  button.blur();
+}
+
 // listen for User Input //////////////////////////
 ///// all event listeners can be stored here //////
 function listenForKeyStrokes() {
@@ -172,6 +192,10 @@ function listenForKeyStrokes() {
       taskCollection.editTask(index, newDescription, newStatus);
     });
   });
+
+  //listen for navbar interaction
+  let infoButton = document.querySelector('.nav-bar__info-logo');
+  infoButton.addEventListener('click', () => makeButtonActive(infoButton));
 }
 
 function toggleTheme(event) {
@@ -204,8 +228,6 @@ function toggleCompletedTasks(event) {
 
 // initialise the page ///////////////////////
 /////////////////////////////////////////////
+
 renderTaskList();
 
-
-// &#129323 shhh
-// &#128578 face
