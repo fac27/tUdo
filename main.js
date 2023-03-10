@@ -181,10 +181,10 @@ function toggleTheme(event) {
   const currentTheme = bodyElement.getAttribute("data-theme");
 
   if (currentTheme === "light") {
-    element.innerHTML = "&#127774";
+    element.innerHTML = "&#9728";
     bodyElement.setAttribute("data-theme", "dark");
   } else {
-    element.innerHTML = "&#127772";
+    element.innerHTML = "&#9790";
     bodyElement.setAttribute("data-theme", "light");
   }
 }
@@ -193,10 +193,10 @@ function toggleCompletedTasks(event) {
   const element = event.srcElement;
 
   if (showCompletedTasks) {
-    element.innerHTML = "&#128578";
+    element.innerHTML = "&#9745";
     renderTaskList(false);
   } else {
-    element.innerHTML = "&#129323";
+    element.innerHTML = "&#9744";
     renderTaskList();  // <<<<------------------- THIS IS IN THE WRONG PLACE TO WORK
   }
   showCompletedTasks = !showCompletedTasks;
