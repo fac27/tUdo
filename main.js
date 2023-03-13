@@ -59,11 +59,14 @@ const newItem = (object) => {
   let checkedItem = status === TaskStatus.Complete ? "checked=true" : "";
   
   let newTask = printHTML(`
-  <div class='item width-large'>
-  <input type='checkbox' class='item__completed' ${checkedItem}</input>
-  <input type="text" class='item__description' placeholder='add item ...'></input>
-  </div>
-  `);
+
+    <div class='item width-large'>
+      <input type='checkbox' class='item__completed' ${checkedItem}</input>
+      <input type="text" class='item__description' placeholder='add item ...'></input>
+      <button type='button' class='item__delete-button' tabindex='-1'>&#9988;</button>
+    </div>
+    `);
+
   canvas.append(newTask);
   
   let textInput = newTask.querySelector(".item__description");
@@ -104,11 +107,108 @@ function enterNewItem(keyPress, activeElement) {
 function deleteItem(edited) {
   let items = Array.from(
     document.querySelectorAll(".item__description")
-    ).splice(1);
-    let index = items.indexOf(edited);
-    taskCollection.deleteTask(index);
-    renderTaskList();
+  ).splice(1);
+  let index = items.indexOf(edited);
+  taskCollection.deleteTask(index);
+  renderTaskList();
+}
+
+function editItem(edited) {
+  let items = Array.from(
+    document.querySelectorAll(".item__description")
+  ).splice(1);
+  let index = items.indexOf(edited);
+  let newDescription = edited.value;
+  let newStatus = edited.parentElement.firstElementChild.checked ? 2 : 1;
+
+  taskCollection.editTask(index, newDescription, newStatus);
+  renderTaskList();
+}
+
+function tickItem(edited) {
+  let checkBox = edited.previousElementSibling;
+  checkBox.checked = true;
+  edited.value = edited.value.replace(/(\/done)$/, "");
+  editItem(edited);
+}
+
+function untickItem(edited) {
+  let checkBox = edited.previousElementSibling;
+  checkBox.checked = false;
+  edited.value = edited.value.replace(/(\/pending)$/, "");
+  editItem(edited);
+}
+
+function makeButtonActive(button){
+  button.classList.toggle('nav-bar__info-logo--active');
+  button.blur();
+}
+
+// listen for User Input //////////////////////////
+///// all event listeners can be stored here //////
+function listenForKeyStrokes() {
+  // listen for keyboard input
+  let tasksOnPage = Array.from(
+    document.querySelectorAll(".item__description")
+  ).splice(1);
+
+  let typeToDelete = new RegExp(/(\/delete)$/);
+  let typeToComplete = new RegExp(/(\/done)$/);
+  let typeToUntick = new RegExp(/(\/pending)$/);
+
+  tasksOnPage.forEach((task) => {
+    task.addEventListener("keyup", (e) => {
+      if (e.key !== "Enter") return;
+      if (typeToDelete.test(task.value)) return deleteItem(task);
+      if (typeToComplete.test(task.value)) return tickItem(task);
+      if (typeToUntick.test(task.value)) return untickItem(task);
+      editItem(task);
+    });
+  });
+
+  // listen for checkbox interaction
+  let checkBoxes = Array.from(
+    document.querySelectorAll(".item__completed")
+  ).splice(1);
+
+  checkBoxes.forEach((box) => {
+    box.addEventListener("change", () => {
+      let index = checkBoxes.indexOf(box);
+      let newDescription = box.nextElementSibling.value;
+      let newStatus = box.checked === true ? 2 : 1;
+
+      taskCollection.editTask(index, newDescription, newStatus);
+    });
+  });
+
+  // listen for delete buttons
+  let deleteButtons = Array.from(document.querySelectorAll('.item__delete-button')).splice(1);
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      let selectedItem = button.parentElement.querySelector('.item__description');
+      deleteItem(selectedItem);
+    })
+  })
+
+  //listen for navbar interaction
+  let infoButton = document.querySelector('.nav-bar__info-logo');
+  infoButton.addEventListener('click', () => makeButtonActive(infoButton));
+}
+
+function toggleTheme(event) {
+  const element = event.srcElement;
+  const bodyElement = document.querySelector("body");
+
+  const currentTheme = bodyElement.getAttribute("data-theme");
+
+  if (currentTheme === "light") {
+    element.innerHTML = "&#9728";
+    bodyElement.setAttribute("data-theme", "dark");
+  } else {
+    element.innerHTML = "&#9790";
+    bodyElement.setAttribute("data-theme", "light");
   }
+}
   
   function editItem(edited) {
     let items = Array.from(

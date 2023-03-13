@@ -20,23 +20,32 @@ For this project we were asked to build a functional to-do list that could meet 
 ### Testing
 A testing library was developed alongside the tUdo page as part of this project to verify that each user story is met.
 
-The snippet below is an example of a test that emulates user input onto the page and checks whether the expected result is returned.
+In order to allow for an overview of the user experience in the DOM, our tests will run on startup with a delay in relation to each other, replicating the user journey through various functionalities of the page.
 
 ```javascript
-test('submitting text within the task prompt field will create a new task', () => {
-    let expected = 'test task';
+function runTests(){
+    let allStrings = [
+        'typing a new task adds it to the stored list', 
+        'editing an existing item will change the associated task',
+        'typing "/done" marks a task as completed', 
+        'typing "/pending" marks a task as pending',
+        'typing "/delete" removes a task', 
+        'the number of tasks displayed matches the number of task objects in storage'
+    ];
 
-    let emptyTask = document.querySelectorAll('.item__description')[0];
-    emptyTask.value = 'test task';
-    emptyTask.dispatchEvent(pressEnter);
+    let allTests = [
+        typeToCreate, 
+        typeToEdit,
+        typeToComplete, 
+        typeToUncheck,
+        typeToDelete, 
+        trackTaskListInStorage
+    ];
     
-    let testInput = document.querySelectorAll('.item__description')[1];
-    testInput.classList.add('test-task');
-
-    taskCollection.getAllTasksFromStorage();
-    let output = testInput.value;
-    
-    isEqual(expected, output, 'created a test task');
+    for(let i = 0; i < allTests.length; i++){
+        setTimeout(() => test(allStrings[i], allTests[i]), i * 1000);
+    }
+}
 };
 ```
 
