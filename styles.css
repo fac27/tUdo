@@ -124,6 +124,26 @@ display: block;
   text-overflow: ellipsis;
 }
 
+.item__delete-button{
+  background:none;
+  border:none;
+  color:var(--color-text);
+  position:absolute;
+  right:45px;
+}
+
+@media screen and (min-width:480px) {
+  .item__delete-button{
+    display:none;
+    position:absolute;
+    right:40%;
+  }
+  
+  .item:hover > .item__delete-button{
+    display:block;
+  }
+}
+
 /* newest list item being defined */
 .item:first-of-type {
   flex-direction: row-reverse;
@@ -135,6 +155,10 @@ display: block;
 
 .item:first-of-type > .item__description {
   font-weight: initial;
+}
+
+.item:first-of-type > .item__delete-button{
+  display:none;
 }
 
 /* items not checked off -- still to do */
