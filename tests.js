@@ -135,4 +135,4 @@ function runTests(){
     }
 }
 
-runTests()
+test('all tasks are on the page', trackTaskListInStorage)

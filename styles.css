@@ -55,7 +55,14 @@ body {
   user-select: none;
 }
 
-.nav-bar__toggle-completed--logo {
+.nav-bar__filter {
+  font-size: 1.5rem;
+  cursor: pointer;
+  user-select: none;
+  
+}
+
+.nav-bar__filter--active{
   font-size: 1.5rem;
   cursor: pointer;
   user-select: none;
@@ -109,6 +116,10 @@ display: block;
   align-items: center;
   width: 100%;
   grid-column: 2 / span 4;
+}
+
+.item--filtered-out:has(.item__completed:checked) {
+  display:none;
 }
 
 .item__completed {
