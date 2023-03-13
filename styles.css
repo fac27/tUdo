@@ -55,6 +55,12 @@ body {
   user-select: none;
 }
 
+.nav-bar__toggle-completed--logo {
+  font-size: 1.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
 .nav-bar__toggle-theme--logo:active {
   content: "\263E";
 }
