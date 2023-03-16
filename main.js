@@ -90,7 +90,9 @@ function renderTaskList() {
 // keyboard commands ////////////////////////
 ////////////////////////////////////////////
 function enterNewItem(keyPress, activeElement) {
-  if (keyPress.key === "Enter") {
+  let emptyField = new RegExp(/^\s*$/);
+  
+  if (keyPress.key === "Enter" && !emptyField.test(activeElement.value)) {
     let description = activeElement.value;
     let done = activeElement.parentElement.querySelector("input").checked;
     let status = done === true ? TaskStatus.Complete : TaskStatus.InProgress;
@@ -151,10 +153,12 @@ function listenForKeyStrokes() {
   let typeToDelete = new RegExp(/(\/delete)$/);
   let typeToComplete = new RegExp(/(\/done)$/);
   let typeToUntick = new RegExp(/(\/pending)$/);
+  let emptyField = new RegExp(/^\s*$/);
 
   tasksOnPage.forEach((task) => {
     task.addEventListener("keyup", (e) => {
-      if (e.key !== "Enter") return;
+      if (e.key !== "Enter" || emptyField.test(task.value))
+        return;
       if (typeToDelete.test(task.value)) return deleteItem(task);
       if (typeToComplete.test(task.value)) return tickItem(task);
       if (typeToUntick.test(task.value)) return untickItem(task);
