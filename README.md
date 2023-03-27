@@ -5,6 +5,9 @@ The page is designed to facilitate intuitive and fluent user interactions.
 - All input can be done via simple keyboard commands 
 - A clean and minimalistic layout shifts focus to the information on the page
 
+## Deployed page
+tUdo is hosted through GitHub Pages and can be accessed through this [link](https://fac27.github.io/tUdo/)
+
 ## The aim of this project
 tUdo is a personalised tasklist tracker. Tasks added are stored locally and progress can be tracked easily.
 
